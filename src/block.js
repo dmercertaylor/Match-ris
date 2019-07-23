@@ -6,8 +6,8 @@ class Block{
         this.stopFall = false;
         this.upPressed = false;
         this.timer = 0;
-        this.moveTimer = 150;
-        this.timerReset = 800;
+        this.timerReset = game.fallTime;
+        this.moveTimer = (this.timerReset>150)?150:this.timerReset;
         this.isBlocked = {left: false, right: false, up: false, down: false}
         this.positions = {
             box: [[[0,0],[1,0],[1,1],[0,1]],[[1,0],[1,1],[0,1],[0,0]],[[1,1],[0,1],[0,0],[1,0]],[[0,1],[0,0],[1,0],[1,1]]],
@@ -90,7 +90,7 @@ class Block{
             }
         }else if(input.up&&!this.upPressed){  
             this.upPressed  = true;
-        }else if(input.down){
+        }else if(input.down&&this.timerReset>75){
             this.timerReset = 75;
         }
 

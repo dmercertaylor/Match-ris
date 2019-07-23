@@ -42,6 +42,8 @@ var input = {
             case "KeyS":
                 input.down = false;
                 break;
+            case "ArrowUp":
+                game.block.rotateLeft();
             default:
                 break;
         }
@@ -50,7 +52,6 @@ var input = {
         switch(keycode){
             case "KeyZ":
             case "KeyW":
-            case "ArrowUp":
                 game.block.rotateLeft();
                 break;
             case "KeyX":

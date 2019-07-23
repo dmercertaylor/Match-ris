@@ -6,10 +6,17 @@ class Game{
         this.height = gameHeight;
         this.gridSize = gameWidth/10;
         this.board=[];
+        this.markedForDeletion = [];
         this.lineHeight = this.height/this.gridSize;
+        this.multiplier = 0;
         this.score = 0;
+        this.fallTime = 1000;
+        this.fallTimeCoef = 1;
+        this.levelTicker = 20;
         this.scoreAnimationTimer=0;
-        this.scoreAnimationTimeLength=200;
+        this.scoreAnimationTimeLength=150;
+        this.doneFalling = true;
+        this.doneScoring = false;
         for(let i=0;i<this.height/this.gridSize;i++){
             this.board.push([]);
             for(let z=0;z<this.width/this.gridSize;z++){
@@ -25,6 +32,11 @@ class Game{
             this.drawBlock();
             if(!this.block.falling){
                 this.setLineHeight();
+                this.levelTicker--;
+                if(this.levelTicker<=0){
+                    this.fallTime = this.fallTime * 0.81;
+                    this.levelTicker = 20;
+                }
                 this.block = new Block(this);
                 if(this.checkScore()!==false){
                     gameState = 'scoring';
@@ -33,41 +45,68 @@ class Game{
         }
         if(gameState === 'scoring'){
             this.scoreAnimationTimer += deltaTime;
-            let multiplier = 0;
             function fall(){
-                let doneFalling = true;
+                game.doneFalling = true;
                 for(let y=game.board.length-2;y>=game.lineHeight;y--){
                     for(let x=0; x<game.board[y].length;x++){
                         if(game.board[y][x]!==-1){
                             if(game.board[y+1][x]===-1){
                                 game.board[y+1][x] = game.board[y][x];
                                 game.board[y][x] = -1;
-                                doneFalling = false;
+                                game.doneFalling = false;
                             }
                         }
                     }
                 }
-                if(!doneFalling){
-                    fall();
-                }if(doneFalling){
+                if(!game.doneFalling){
+                    return false;
+                }if(game.doneFalling){
                     return true;
                 }
             }
-            if(this.checkScore()){
-                let scoreLine = this.checkScore();
-                multiplier += scoreLine.length - 2;
-                for(let i=0;i<scoreLine.length;i++){
-                    if(scoreLine.direction === 'down'){
-                        game.board[scoreLine.y+i][scoreLine.x] = -1;
+            if(this.scoreAnimationTimer>=this.scoreAnimationTimeLength){
+                this.scoreAnimationTimer = 0;
+                if(this.checkScore()&&!this.doneScoring){
+                    let lines = this.checkScore();
+                    for(let z=0;z<lines.length;z++){
+                        let scoreLine = lines[z];
+                        this.multiplier += scoreLine.length - 2;
+                        for(let i=0;i<scoreLine.length;i++){
+                            if(scoreLine.direction === 'down'){
+                                game.board[scoreLine.y+i][scoreLine.x] = -2;
+                                game.markedForDeletion.push({x: scoreLine.x, y: scoreLine.y+i});
+                            }
+                            if(scoreLine.direction === 'right'){
+                                game.board[scoreLine.y][scoreLine.x+i] = -2;
+                                game.markedForDeletion.push({x: scoreLine.x+i, y: scoreLine.y});
+                            }
+                            this.score += i * this.multiplier
+                        }
                     }
-                    if(scoreLine.direction === 'right'){
-                        game.board[scoreLine.y][scoreLine.x+i] = -1;
-                    }
-                    this.score += i * multiplier
+                }else{
+                    this.doneScoring = true;
                 }
-                fall();
+                if(this.doneScoring){
+                    for(let i=0; i<this.markedForDeletion.length;i++){
+                        let object = this.markedForDeletion[i];
+                        game.board[object.y][object.x] = -1;
+                    }
+                    this.markedForDeletion = [];
+                    fall();
+                    if(this.doneFalling){
+                        if(this.checkScore()){
+                            this.doneFalling = true;
+                            this.doneScoring = false;
+                        }else{
+                        gameState = 'play';
+                        this.doneFalling = true;
+                        this.doneScoring = false;
+                        this.multiplier = 0;
+                        console.log(this.score);
+                        }
+                    }
+                }
             }
-            console.log(this.score);
         }
     }
     clearBlock(){
@@ -81,6 +120,7 @@ class Game{
         });
     }
     checkScore(){
+        let output = [];
         function findMatch(x,y){
             let rightChain = 1;
             let downChain = 1;
@@ -106,19 +146,24 @@ class Game{
         }
         for(let y=game.lineHeight;y<game.board.length;y++){
             for(let x=0;x<game.board[y].length;x++){
-                if(game.board[y][x]!==-1){
+                if(game.board[y][x]>-1){
                     let matches = findMatch(x,y);
                     if(matches[0]>=3){
-                        return {x: x, y: y, direction: 'right', length: matches[0]};
+                        output.push({x: x, y: y, direction: 'right', length: matches[0]});
                     }
                     if(matches[1]>=3){
-                        return {x: x, y: y, direction: 'down', length: matches[1]};
+                        output.push({x: x, y: y, direction: 'down', length: matches[1]});
                     }
                 }
             }
         }
-        return false;
+        if(output.length>0){
+            return output;
+        }else{
+            return false;
+        }
     }
+
     setLineHeight(){
         for(let y=0;y<this.board.length;y++){
             let breakout=false;
@@ -138,7 +183,11 @@ class Game{
         for(let row=0;row<this.board.length;row++){
             for(let col=0;col<this.board[row].length;col++){
                 if(this.board[row][col]!==-1){
+                    if(this.board[row][col]===-2){
+                        ctx.fillStyle = "gold";
+                    } else{
                     ctx.fillStyle = colorSheet[this.board[row][col]];
+                    }
                     ctx.fillRect(col*this.gridSize,row*this.gridSize,this.gridSize,this.gridSize);
                 }
             }

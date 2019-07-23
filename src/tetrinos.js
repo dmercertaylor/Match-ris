@@ -9,7 +9,9 @@ var colorSheet = ["red","#05ae05","blue"];
 let lastTime = 0;
 let gameState = 'start';
 let game = new Game(GAME_WIDTH,GAME_HEIGHT);
-let highScore = 0;
+let storage = window.localStorage;
+let highScore = storage.getItem('highScore');
+highScore = (highScore)?Number(highScore):0;
 
 ctx.clearRect(0,0,GAME_WIDTH,GAME_HEIGHT);
 window.onload = function(){

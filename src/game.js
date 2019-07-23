@@ -1,5 +1,6 @@
 class Game{
     constructor(gameWidth, gameHeight){
+        gameState = 'start';
         this.width = gameWidth;
         this.height = gameHeight;
         this.gridSize = gameWidth/10;
@@ -34,7 +35,10 @@ class Game{
             this.drawBlock();
             if(!this.block.falling){
                 this.setLineHeight();
-                console.log(gameState);
+                if(gameState==='loss'){
+                    game = new Game(GAME_WIDTH,GAME_HEIGHT);
+                    return;
+                }
                 this.levelTicker--;
                 if(this.levelTicker<=0){
                     this.fallTime = this.fallTime * 0.81;
@@ -105,7 +109,6 @@ class Game{
                         this.doneFalling = true;
                         this.doneScoring = false;
                         this.multiplier = colorSheet.length/3;
-                        console.log(this.score);
                         }
                     }
                 }
@@ -171,10 +174,11 @@ class Game{
         if(this.lineHeight===0){
             if(this.score>highScore){
                 highScore = this.score;
+                storage.setItem('highScore', String(highScore));
                 return true;
             }
+            gameState = "loss";
             alert("Your score: "+this.score+"\nHigh score: "+highScore);
-            game = new Game(GAME_WIDTH,GAME_HEIGHT);
         }
         for(let y=0;y<this.board.length;y++){
             let breakout=false;

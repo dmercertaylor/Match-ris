@@ -21,7 +21,7 @@ class Menu{
         }
         this.buttons = [
             new ColorButton(game.width*0.15,game.height*0.25, "red",'red'),
-            new ColorButton(game.width*0.55,game.height*0.25, "#05ae05",'green'),
+            new ColorButton(game.width*0.55,game.height*0.25, "green",'green'),
             new ColorButton(game.width*0.15,game.height*0.25+40, "blue",'blue'),
             new ColorButton(game.width*0.55,game.height*0.25+40, "cyan",'cyan'),
             new ColorButton(game.width*0.15,game.height*0.25+80, "purple",'purple'),
@@ -78,8 +78,13 @@ class Menu{
                     colorSheet.push(button.color);
                 }
             });
-            game.block = new Block(game);
-            gameState = 'play';
+            if(colorSheet.length>=3){
+                game.block = new Block(game);
+                game.multiplier = colorSheet.length/3
+                gameState = 'play';
+            }else{
+                alert("Please select at least 2 colors");
+            }
             return;
         }
         this.objects[this.hoveringOver].selected = !this.objects[this.hoveringOver].selected;

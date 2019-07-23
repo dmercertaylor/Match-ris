@@ -72,7 +72,7 @@ class Block{
 
     update(deltaTime){
         this.timer += deltaTime;
-        this.timerReset = 800;
+        this.timerReset = game.fallTime;
         this.moveTimer -= deltaTime;
         this.updateBricks();
         if(this.moveTimer < 0){

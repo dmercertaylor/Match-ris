@@ -9,7 +9,6 @@ class Game{
         this.multiplier = colorSheet.length/3;
         this.score = 0;
         this.fallTime = 900;
-        this.fallTimeCoef = 1;
         this.levelTicker = 15;
         this.scoreAnimationTimer=0;
         this.scoreAnimationTimeLength=150;
@@ -35,6 +34,7 @@ class Game{
             this.drawBlock();
             if(!this.block.falling){
                 this.setLineHeight();
+                console.log(gameState);
                 this.levelTicker--;
                 if(this.levelTicker<=0){
                     this.fallTime = this.fallTime * 0.81;
@@ -168,6 +168,14 @@ class Game{
     }
 
     setLineHeight(){
+        if(this.lineHeight===0){
+            if(this.score>highScore){
+                highScore = this.score;
+                return true;
+            }
+            alert("Your score: "+this.score+"\nHigh score: "+highScore);
+            game = new Game(GAME_WIDTH,GAME_HEIGHT);
+        }
         for(let y=0;y<this.board.length;y++){
             let breakout=false;
             for(let x=0;x<this.board[y].length;x++){

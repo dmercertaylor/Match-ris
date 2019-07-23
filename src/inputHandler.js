@@ -3,6 +3,7 @@ var input = {
     right: false,
     up: false,
     down: false,
+    enter: false,
     rotateLeft: false,
     rotateRight: false,
     lastPressed: undefined,
@@ -21,6 +22,12 @@ var input = {
             case "ArrowDown":
             case "KeyS":
                 input.down = true;
+                break;
+            case "ArrowUp":
+            case "KeyW":
+                if(gameState==='start'){
+                    input.up=true;
+                }
                 break;
             default:
                 break;
@@ -43,7 +50,13 @@ var input = {
                 input.down = false;
                 break;
             case "ArrowUp":
-                game.block.rotateLeft();
+            case "KeyW":
+                if(gameState === 'play'){
+                    game.block.rotateLeft();
+                }else if(gameState==='start'){
+                    input.up=false;
+                }
+                break;
             default:
                 break;
         }
@@ -52,11 +65,20 @@ var input = {
         switch(keycode){
             case "KeyZ":
             case "KeyW":
-                game.block.rotateLeft();
+                if(gameState==='play'){
+                    game.block.rotateLeft();
+                }
                 break;
             case "KeyX":
-                game.block.rotateRight();
+                if(gameState==='play'){
+                    game.block.rotateRight();
+                }
                 break;
+            case "Enter":
+            case "Space":
+                if(gameState==='start'){
+                    game.menu.enter();
+                }
             default:
                 break;
         }

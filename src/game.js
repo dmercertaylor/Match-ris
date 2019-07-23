@@ -1,5 +1,3 @@
-let gameState = 'play';
-
 class Game{
     constructor(gameWidth, gameHeight){
         this.width = gameWidth;
@@ -8,11 +6,11 @@ class Game{
         this.board=[];
         this.markedForDeletion = [];
         this.lineHeight = this.height/this.gridSize;
-        this.multiplier = 0;
+        this.multiplier = colorSheet.length/3;
         this.score = 0;
-        this.fallTime = 1000;
+        this.fallTime = 900;
         this.fallTimeCoef = 1;
-        this.levelTicker = 20;
+        this.levelTicker = 15;
         this.scoreAnimationTimer=0;
         this.scoreAnimationTimeLength=150;
         this.doneFalling = true;
@@ -23,9 +21,14 @@ class Game{
                 this.board[i].push(-1);
             }
         }
-        this.block = new Block(this);
+        this.menu = new Menu(this);
+        //this.block = new Block(this);
     }
     update(deltaTime){
+        if(gameState === 'start'){
+            this.menu.update(deltaTime);
+            this.menu.draw(ctx);
+        }
         if(gameState === 'play'){
             this.clearBlock();
             this.block.update(deltaTime);
@@ -35,7 +38,7 @@ class Game{
                 this.levelTicker--;
                 if(this.levelTicker<=0){
                     this.fallTime = this.fallTime * 0.81;
-                    this.levelTicker = 20;
+                    this.levelTicker = 15;
                 }
                 this.block = new Block(this);
                 if(this.checkScore()!==false){
@@ -101,7 +104,7 @@ class Game{
                         gameState = 'play';
                         this.doneFalling = true;
                         this.doneScoring = false;
-                        this.multiplier = 0;
+                        this.multiplier = colorSheet.length/3;
                         console.log(this.score);
                         }
                     }

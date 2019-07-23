@@ -22,7 +22,7 @@ class Game{
             }
         }
         this.menu = new Menu(this);
-        //this.block = new Block(this);
+        this.block;
     }
     update(deltaTime){
         if(gameState === 'start'){

@@ -98,11 +98,11 @@ class Menu{
                 this.objects[this.hoveringOver].hover=true;
             }else if(input.up&&!this.prevInput.up){
                 this.objects[this.hoveringOver].hover=false;
-                this.hoveringOver = (this.hoveringOver-2<0)?this.hoveringOver:this.hoveringOver-2;
+                this.hoveringOver = (this.hoveringOver-2<0)?0:this.hoveringOver-2;
                 this.objects[this.hoveringOver].hover=true;
             }else if(input.down&&!this.prevInput.down){
                 this.objects[this.hoveringOver].hover=false;
-                this.hoveringOver = (this.hoveringOver+2>=this.objects.length)?this.hoveringOver:this.hoveringOver+2;
+                this.hoveringOver = (this.hoveringOver+2>=this.objects.length)?this.objects.length-1:this.hoveringOver+2;
                 this.objects[this.hoveringOver].hover=true;
             }
         this.prevInput = {left: input.left, right: input.right, up: input.up, down: input.down}

@@ -51,16 +51,17 @@ class Menu{
     }
     startUp(){
         let out = true;
-        let maxWidth = game.gridSize*(game.board[0].length-2);
-        let maxHeight = game.gridSize*(game.board.length-2);
+        let maxWidth = game.gridSize*(game.board[0].length-1.5);
+        let maxHeight = game.gridSize*(game.board.length-1.5);
         if(this.frame.width<maxWidth){
-            this.frame.width += maxWidth/10;
-            this.frame.x -= maxWidth/20;
+            this.frame.width += maxWidth/8;
+            this.frame.x -= maxWidth/16;
+            console.log(this.frame.width + ' '+maxWidth);
             out = false;
         }
         if(this.frame.height<maxHeight){
-            this.frame.height += maxHeight/10;
-            this.frame.y -= maxHeight/20;
+            this.frame.height += maxHeight/8;
+            this.frame.y -= maxHeight/16;
             out = false;
         }
         if(out){

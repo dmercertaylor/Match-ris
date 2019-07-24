@@ -65,11 +65,13 @@ var input = {
         switch(keycode){
             case "KeyZ":
             case "KeyW":
+            case "Comma":
                 if(gameState==='play'){
                     game.block.rotateLeft();
                 }
                 break;
             case "KeyX":
+            case "Period":
                 if(gameState==='play'){
                     game.block.rotateRight();
                 }

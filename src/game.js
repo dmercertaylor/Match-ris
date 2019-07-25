@@ -35,6 +35,7 @@ class Game{
             this.drawBlock();
             if(!this.block.falling){
                 this.setLineHeight();
+                this.checkLoss();
                 if(gameState==='loss'){
                     game = new Game(GAME_WIDTH,GAME_HEIGHT);
                     return;
@@ -109,6 +110,7 @@ class Game{
                         this.doneFalling = true;
                         this.doneScoring = false;
                         this.multiplier = colorSheet.length/3;
+                        this.setLineHeight();
                         }
                     }
                 }
@@ -169,8 +171,7 @@ class Game{
             return false;
         }
     }
-
-    setLineHeight(){
+    checkLoss(){
         if(this.lineHeight===0){
             if(this.score>highScore){
                 highScore = this.score;
@@ -180,6 +181,8 @@ class Game{
             gameState = "loss";
             alert("Your score: "+this.score+"\nHigh score: "+highScore);
         }
+    }
+    setLineHeight(){
         for(let y=0;y<this.board.length;y++){
             let breakout=false;
             for(let x=0;x<this.board[y].length;x++){

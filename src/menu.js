@@ -10,7 +10,7 @@ class Menu{
             color: "white",
             font: "20px roboto mono",
             draw: function(ctx){
-                let marginTop = game.height*.15;
+                let marginTop = game.height*.125;
                 ctx.fillStyle = this.color;
                 ctx.font = this.font;
                 textWrap(ctx,this.text,game.width-game.gridSize*2).forEach((line)=>{
@@ -19,19 +19,33 @@ class Menu{
                 });
             }
         }
+        this.difficultyLabel = {
+            text: "Starting speed:",
+            color: "white",
+            font: "20px roboto mono",
+            draw: function(ctx){
+                let marginTop = game.height*.5;
+                ctx.fillStyle = this.color;
+                ctx.font = this.font;
+                textWrap(ctx,this.text,game.width-game.gridSize*2).forEach((line)=>{
+                    ctx.fillText(line, game.gridSize, marginTop);
+                    marginTop+=28;
+            });
+        }
+    }
         this.buttons = [
-            new ColorButton(game.width*0.15,game.height*0.25, "red",'red'),
-            new ColorButton(game.width*0.55,game.height*0.25, "green",'green'),
-            new ColorButton(game.width*0.15,game.height*0.25+40, "blue",'blue'),
-            new ColorButton(game.width*0.55,game.height*0.25+40, "cyan",'cyan'),
-            new ColorButton(game.width*0.15,game.height*0.25+80, "purple",'purple'),
-            new ColorButton(game.width*0.55,game.height*0.25+80, "black",'black'),
+            new ColorButton(game.width*0.15,game.height*0.21, "red",'red'),
+            new ColorButton(game.width*0.55,game.height*0.21, "green",'green'),
+            new ColorButton(game.width*0.15,game.height*0.21+40, "blue",'blue'),
+            new ColorButton(game.width*0.55,game.height*0.21+40, "cyan",'cyan'),
+            new ColorButton(game.width*0.15,game.height*0.21+80, "purple",'purple'),
+            new ColorButton(game.width*0.55,game.height*0.21+80, "black",'black'),
         ];
         this.startButton = {
             width: game.width-game.gridSize*2,
             height: 64,
             x: game.gridSize,
-            y: game.height*0.67,
+            y: game.height*0.75,
             hover: false,
             draw(){
                 ctx.fillStyle = "blue";
@@ -119,12 +133,29 @@ class Menu{
         ctx.fillRect(this.frame.x,this.frame.y,this.frame.width,this.frame.height);
         if(this.startedUp){
             this.textBlurb.draw(ctx);
+            this.difficultyLabel.draw(ctx);
             this.objects.forEach((button)=>{
                 button.draw(ctx);
             });
         }
     }
 }
+
+class DifficultyButton{
+    constructor(x, y, value){
+        this.x = x;
+        this.y = y;
+        this.value = value;
+        this.hover = false;
+        this.selected = false;
+    }
+    draw(ctx){
+        ctx.font = "20px roboto mono";
+        ctx.fillStyle
+       
+    }
+}
+
 class ColorButton{
     constructor(x,y,color,text){
         this.x = x;

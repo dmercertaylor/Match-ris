@@ -50,7 +50,6 @@ var input = {
                 input.down = false;
                 break;
             case "ArrowUp":
-            case "KeyW":
                 if(gameState === 'play'){
                     game.block.rotateLeft();
                 }else if(gameState==='start'){

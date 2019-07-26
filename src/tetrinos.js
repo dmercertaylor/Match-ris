@@ -1,10 +1,9 @@
-let canvas = document.getElementById("gameScreen");
-let ctx = canvas.getContext("2d");
-
+const canvas = document.getElementById("gameScreen");
+const ctx = canvas.getContext("2d");
 
 const GAME_WIDTH = canvas.width;
 const GAME_HEIGHT = canvas.height;
-var colorSheet = ["red","#05ae05","blue"];
+var colorSheet = [];
 
 let lastTime = 0;
 let gameState = 'start';

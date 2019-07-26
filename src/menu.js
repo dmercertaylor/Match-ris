@@ -41,7 +41,7 @@ class Menu{
             new ColorButton(game.width*0.55,game.height*0.21+80, "black",'black')],
         ];
         this.startButton = {
-            width: game.width-game.gridSize*2,
+            width: game.width-(game.gridSize*2),
             height: 64,
             x: game.gridSize,
             y: game.height*0.75,
@@ -62,6 +62,15 @@ class Menu{
         this.objects=[...this.buttons, [this.startButton]];
         this.objects[0].hover = true;
         this.hoveringOver = {row: 0, col: -1};
+        this.gameStartListener = canvas.addEventListener("click", (event)=>{
+            let button = this.startButton;
+            if(event.offsetX>=button.x
+            &&event.offsetX<=button.x+button.width
+            &&event.offsetY>=button.y
+            &&event.offsetY<=button.y+button.height){
+                this.startGame();
+            }
+        });
     }
     startUp(){
         let out = true;
@@ -82,12 +91,30 @@ class Menu{
             this.buttons[0][0].selected=true;
             this.buttons[0][1].selected=true;
             this.buttons[1][0].selected=true;
+            this.buttons.forEach((group)=>{
+                group.forEach((button)=>{
+                    canvas.addEventListener("click", (event)=>{
+                        if(event.offsetX>=button.x
+                        &&event.offsetX<=button.x+button.width
+                        &&event.offsetY>=button.y
+                        &&event.offsetY<=button.y+button.height){
+                            button.selected = !button.selected;
+                        }
+                    });
+                });
+            });
         }
     }
     enter(){
         let currentSelection = this.objects[this.hoveringOver.row][this.hoveringOver.col];
         if(currentSelection===this.startButton){
-            colorSheet = [];
+            this.startGame();
+            return;
+        }
+        currentSelection.selected = !currentSelection.selected;
+    }
+    startGame(){
+        colorSheet = [];
             this.buttons.forEach((group)=>{
                 group.forEach((button)=>{
                     if(button.selected){
@@ -95,16 +122,13 @@ class Menu{
                     }
                 });
             });
-            if(colorSheet.length>=3){
-                game.block = new Block(game);
-                game.multiplier = colorSheet.length-2+((colorSheet.length-2)*0.5);
-                gameState = 'play';
-            }else{
-                alert("Please select at least 2 colors");
-            }
-            return;
+        if(colorSheet.length>=3){
+            game.block = new Block(game);
+            game.multiplier = colorSheet.length-2+((colorSheet.length-2)*0.5);
+            gameState = 'play';
+        }else{
+            alert("Please select at least 2 colors");
         }
-        currentSelection.selected = !currentSelection.selected;
     }
     update(deltaTime){
         if(!this.startedUp){
@@ -155,7 +179,7 @@ class Menu{
         ctx.fillRect(this.frame.x,this.frame.y,this.frame.width,this.frame.height);
         if(this.startedUp){
             this.textBlurb.draw(ctx);
-            this.difficultyLabel.draw(ctx);
+            //this.difficultyLabel.draw(ctx);
             this.objects.forEach((group)=>{
                 group.forEach((button)=>{
                     button.draw(ctx);
@@ -189,6 +213,10 @@ class ColorButton{
         this.font = "20px roboto mono";
         this.selected = false;
         this.hover = false;
+        ctx.font = this.font;
+        this.width = ctx.measureText(this.text).width+30;
+        console.log(this.width + " " + this.text);
+        this.height = 28;
     }
     update(){
 
@@ -207,7 +235,7 @@ class ColorButton{
         if(this.hover){
             ctx.strokeStyle = "gold"
             ctx.lineWidth = 5;
-            ctx.strokeRect(this.x,this.y,ctx.measureText(this.text).width+30, 28)
+            ctx.strokeRect(this.x,this.y,this.width,this.height);
         }
     }
 }

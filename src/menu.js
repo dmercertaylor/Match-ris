@@ -46,6 +46,7 @@ class Menu{
             x: game.gridSize,
             y: game.height*0.75,
             hover: false,
+            selected: false,
             draw(){
                 ctx.fillStyle = "blue";
                 ctx.fillRect(this.x,this.y,this.width,this.height);
@@ -62,15 +63,6 @@ class Menu{
         this.objects=[...this.buttons, [this.startButton]];
         this.objects[0].hover = true;
         this.hoveringOver = {row: 0, col: -1};
-        this.gameStartListener = canvas.addEventListener("click", (event)=>{
-            let button = this.startButton;
-            if(event.offsetX>=button.x
-            &&event.offsetX<=button.x+button.width
-            &&event.offsetY>=button.y
-            &&event.offsetY<=button.y+button.height){
-                this.startGame();
-            }
-        });
     }
     startUp(){
         let out = true;
@@ -91,19 +83,28 @@ class Menu{
             this.buttons[0][0].selected=true;
             this.buttons[0][1].selected=true;
             this.buttons[1][0].selected=true;
-            this.buttons.forEach((group)=>{
-                group.forEach((button)=>{
-                    canvas.addEventListener("click", (event)=>{
-                        if(event.offsetX>=button.x
-                        &&event.offsetX<=button.x+button.width
-                        &&event.offsetY>=button.y
-                        &&event.offsetY<=button.y+button.height){
-                            button.selected = !button.selected;
-                        }
-                    });
-                });
-            });
+            canvas.addEventListener("click", game.menu.onClick);
         }
+    }
+    onClick(event){
+        game.menu.objects.forEach(group=>{
+            group.forEach(button=>{
+                if(event.offsetX>=button.x
+                &&event.offsetX<=button.x+button.width
+                &&event.offsetY>=button.y
+                &&event.offsetY<=button.y+button.height){
+                    console.log(button);
+                    if(button===game.menu.startButton){
+                        console.log('test');
+                        game.menu.startGame();
+                        return;
+                    }else{
+                    button.selected = !button.selected;
+                    }
+                    return;
+                }
+            });
+        });
     }
     enter(){
         let currentSelection = this.objects[this.hoveringOver.row][this.hoveringOver.col];
@@ -123,8 +124,10 @@ class Menu{
                 });
             });
         if(colorSheet.length>=3){
+            canvas.removeEventListener("click", game.menu.onClick);
             game.block = new Block(game);
             game.multiplier = colorSheet.length-2+((colorSheet.length-2)*0.5);
+            delete game.menu;
             gameState = 'play';
         }else{
             alert("Please select at least 2 colors");
@@ -215,11 +218,7 @@ class ColorButton{
         this.hover = false;
         ctx.font = this.font;
         this.width = ctx.measureText(this.text).width+30;
-        console.log(this.width + " " + this.text);
         this.height = 28;
-    }
-    update(){
-
     }
     draw(ctx){
         ctx.strokeStyle = this.color;

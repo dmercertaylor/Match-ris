@@ -7,7 +7,7 @@ class Game{
         this.board=[];
         this.markedForDeletion = [];
         this.lineHeight = this.height/this.gridSize;
-        this.multiplier = colorSheet.length/3;
+        this.multiplier = colorSheet.length;
         this.score = 0;
         this.fallTime = 900;
         this.levelTicker = 15;
@@ -109,7 +109,7 @@ class Game{
                         gameState = 'play';
                         this.doneFalling = true;
                         this.doneScoring = false;
-                        this.multiplier = colorSheet.length/3;
+                        this.multiplier = colorSheet.length;
                         this.setLineHeight();
                         }
                     }

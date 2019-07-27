@@ -127,7 +127,7 @@ class Menu{
         if(colorSheet.length>=3){
             canvas.removeEventListener("click", game.menu.onClick);
             game.block = new Block(game);
-            game.multiplier = colorSheet.length-2+((colorSheet.length-2)*0.5);
+            game.multiplier = colorSheet.length;
             delete game.menu;
             gameState = 'play';
         }else{

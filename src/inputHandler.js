@@ -7,33 +7,39 @@ var input = {
     rotateLeft: false,
     rotateRight: false,
     lastPressed: undefined,
-    keyDown: function(keycode){
+    keyDown: function(e){
+        keycode = e.code;
         switch(keycode){
             case "ArrowRight":
             case "KeyD":
                 input.right=true;
                 input.lastPressed='right';
+                e.preventDefault();
                 break;
             case "ArrowLeft":
             case "KeyA":
                 input.left=true;
                 input.lastPressed='left';
+                e.preventDefault();
                 break;
             case "ArrowDown":
             case "KeyS":
                 input.down = true;
+                e.preventDefault();
                 break;
             case "ArrowUp":
             case "KeyW":
                 if(gameState==='start'){
                     input.up=true;
                 }
+                e.preventDefault();
                 break;
             default:
                 break;
         }
     },
-    keyUp: function(keycode){
+    keyUp: function(e){
+        keycode = e.code;
         switch(keycode){
             case "ArrowRight":
             case "KeyD":
@@ -60,7 +66,8 @@ var input = {
                 break;
         }
     },
-    keyPress: function(keycode){
+    keyPress: function(e){
+        keycode = e.code;
         switch(keycode){
             case "KeyZ":
             case "KeyW":
@@ -86,12 +93,7 @@ var input = {
     }
 }
 
-document.addEventListener("keydown", event=>{
-    input.keyDown(event.code);
-});
-document.addEventListener("keyup", event=>{
-    input.keyUp(event.code);
-});
-document.addEventListener("keypress", event=>{
-    input.keyPress(event.code);
-});
+
+document.addEventListener("keypress", input.keyPress);
+document.addEventListener("keydown", input.keyDown);
+document.addEventListener("keyup", input.keyUp);

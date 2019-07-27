@@ -111,8 +111,9 @@ class Menu{
         if(currentSelection===this.startButton){
             this.startGame();
             return;
-        }
+        }else{
         currentSelection.selected = !currentSelection.selected;
+        }
     }
     startGame(){
         colorSheet = [];

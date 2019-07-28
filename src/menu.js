@@ -2,7 +2,7 @@ class Menu{
     constructor(game){
         this.frame = {x: game.width/2, y: game.height/2, width: 0, height: 0, color: "rgba(0,25,25,0.69)"};
         this.startedUp = false;
-        this.moveTimer =0;
+        this.moveTimer = 0;
         this.timerReset = 250;
         this.prevInput = input;
         this.textBlurb = {text: "Choose which colors to include:",
@@ -93,9 +93,7 @@ class Menu{
                 &&event.offsetX<=button.x+button.width
                 &&event.offsetY>=button.y
                 &&event.offsetY<=button.y+button.height){
-                    console.log(button);
                     if(button===game.menu.startButton){
-                        console.log('test');
                         game.menu.startGame();
                         return;
                     }else{
@@ -108,7 +106,7 @@ class Menu{
     }
     enter(){
         let currentSelection = this.objects[this.hoveringOver.row][this.hoveringOver.col];
-        if(currentSelection===this.startButton){
+        if(currentSelection===this.startButton||(this.hoveringOver.row===0&&this.hoveringOver.col===-1)){
             this.startGame();
             return;
         }else{
@@ -175,7 +173,11 @@ class Menu{
                 this.objects[this.hoveringOver.row][this.hoveringOver.col].hover = true;
                 }
             }
-                this.prevInput = {left: input.left, right: input.right, up: input.up, down: input.down}
+            this.prevInput = {
+                left: input.left,
+                right: input.right,
+                up: input.up,
+                down: input.down}
         }
     }
     draw(ctx){

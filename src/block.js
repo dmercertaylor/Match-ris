@@ -16,7 +16,7 @@ class Block{
             l: [[[0,1],[1,1],[2,1],[2,0]],[[0,0],[0,1],[0,2],[1,2]],[[2,0],[1,0],[0,0],[0,1]],[[1,2],[1,1],[1,0],[0,0]]],
             t: [[[0,0],[1,0],[1,1],[2,0]],[[1,0],[1,1],[0,1],[1,2]],[[2,1],[1,1],[1,0],[0,1]],[[0,2],[0,1],[1,1],[0,0]]],
             s: [[[0,1],[1,1],[1,0],[2,0]],[[0,0],[0,1],[1,1],[1,2]],[[2,0],[1,0],[1,1],[0,1]],[[1,2],[1,1],[0,1],[0,0]]],
-            z: [[[0,0],[1,0],[1,1],[2,1]],[[1,0],[1,1],[0,1],[0,2]],[[2,1],[1,1],[1,0],[0,0]],[[0,2],[0,1],[1,1],[1,0]]],
+            z: [[[0,0],[1,0],[1,1],[2,1]],[[1,0],[1,1],[0,1],[0,2]],[[2,1],[1,1],[1,0],[0,0]],[[0,2],[0,1],[1,1],[1,0]]]
         }
         this.shape = this.setShape();
     }
@@ -125,33 +125,76 @@ class Block{
         }
         return false;
     }
+    
     rotateLeft(){
+        if(!this.tryRotateLeft()){
+            if(!this.isBlocked.left){
+                game.clearBlock();
+                this.coord.x--;
+                if(this.tryRotateLeft()){
+                    return true;
+                }else{
+                    game.clearBlock();
+                    this.coord.x++;
+                    this.updateBricks();
+                }
+            }else{
+            return false;
+            }
+        }
+    }
+
+    rotateRight(){
+        if(!this.tryRotateRight()){
+            if(!this.isBlocked.left){
+                game.clearBlock();
+                this.coord.x--;
+                if(this.tryRotateRight()){
+                    return true;
+                }else{
+                    game.clearBlock();
+                    this.coord.x++;
+                    this.updateBricks();
+                }
+            }else{
+            return false;
+            }
+        }
+    }
+
+    tryRotateLeft(){
         let stop = false;
+        game.clearBlock();
         this.bricks.forEach((brick)=>{
             if(!brick.checkRotateLeftLegal()){
                 stop = true;
             }
         });
-        if(stop===true){
+        if(!stop){
+            this.bricks.forEach((brick)=>{
+                brick.rotateLeft();
+            });
+            return true;
+        }else{
             return false;
         }
-        this.bricks.forEach((brick)=>{
-            brick.rotateLeft();
-        });
     }
     
-    rotateRight(){
+    tryRotateRight(){
         let stop = false;
+        game.clearBlock();
         this.bricks.forEach((brick)=>{
             if(!brick.checkRotateRightLegal()){
                 stop = true;
             }
         });
-        if(stop===true){
+        if(!stop){
+            this.bricks.forEach((brick)=>{
+                brick.rotateRight();
+            });
+            return true;
+        }else{
             return false;
         }
-        this.bricks.forEach((brick)=>{
-            brick.rotateRight();
-        });
     }
 }

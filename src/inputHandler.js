@@ -28,11 +28,11 @@ var input = {
                 e.preventDefault();
                 break;
             case "ArrowUp":
+                    e.preventDefault();
             case "KeyW":
                 if(gameState==='start'){
                     input.up=true;
                 }
-                e.preventDefault();
                 break;
             default:
                 break;

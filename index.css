@@ -26,20 +26,34 @@ h1{
     margin: 0.5em;
     font-family: "Roboto Mono", monospace;
 }
-canvas{
+#gameWrapper{
     border: 8px outset var(--color-1);
     background-color: var(--color-3);
     font-family: 'Roboto Mono', monospace;
+    width: 320px;
+    height: 480px;
+    margin: 0px;
+    padding: 0px;
+}
+canvas{
+    margin: 0px;
+    padding: 0px;
 }
 
 #tutorial{
     max-width: 500px;
 }
 
-.disable-text{ 
+.disable-text{
     -webkit-user-select:none; 
     -webkit-touch-callout:none; 
         -moz-user-select:none; 
         -ms-user-select:none; 
         user-select:none;    
     }
+
+@media only screen and (max-width: 330px){
+    #gameWrapper{
+        border: none;
+    }
+}

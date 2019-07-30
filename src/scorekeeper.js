@@ -7,6 +7,12 @@ class Scorekeeper{
         this.scoreInstance = 0;
         this.scoreEvents = [];
         this.popups = [];
+        this.scoreText = "";
+        /*this.scoreBoard = {
+            x = 4,
+            y = game.gridSize-2,
+
+        }*/
     }
     update(deltaTime){
         this.popups = this.popups.filter((popup)=>{
@@ -18,6 +24,9 @@ class Scorekeeper{
     }
     draw(ctx){
         this.popups.forEach(popup=>{popup.draw(ctx)});
+        ctx.fillStyle = "white";
+        ctx.font = "16px roboto mono";
+        ctx.fillText(this.scoreText, 4, game.gridSize);
     }
     getBaseMultiplier(){
         this.baseMultiplier = fibonacci[(colorSheet.length-1)]*2.5;
@@ -34,6 +43,7 @@ class Scorekeeper{
             scoreLengthBonus = scoreLengthBonus*0.25;
             let thisScore = this.baseMultiplier*score.length*(multiScoreBonus+scoreLengthBonus+multiTurnBonus+1);
             this.popups.push(new ScorePop(score,thisScore));
+            this.scoreInstance+=thisScore;
             //console.log(`base: ${this.baseMultiplier}\nlength: ${score.length}\nmultiscore: ${multiScoreBonus}]\nscoreLength: ${scoreLengthBonus}\nturns: ${multiTurnBonus}\nthis score: ${thisScore}`);
         });
     }

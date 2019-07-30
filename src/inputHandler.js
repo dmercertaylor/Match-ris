@@ -6,6 +6,7 @@ var input = {
     enter: false,
     rotateLeft: false,
     rotateRight: false,
+    upPressed: false,
     lastPressed: undefined,
     keyDown: function(e){
         keycode = e.code;
@@ -27,12 +28,18 @@ var input = {
                 input.down = true;
                 e.preventDefault();
                 break;
-            case "ArrowUp":
-                    e.preventDefault();
             case "KeyW":
                 if(gameState==='start'){
                     input.up=true;
                 }
+                break;
+            case "ArrowUp":
+                if(gameState === 'play'&&!this.upPressed){
+                    game.block.rotateLeft();
+                    this.upPressed = true;
+                }
+                    input.up=true;
+                    e.preventDefault();
                 break;
             default:
                 break;
@@ -57,7 +64,7 @@ var input = {
                 break;
             case "ArrowUp":
                 if(gameState === 'play'){
-                    game.block.rotateLeft();
+                    this.upPressed = false;
                 }else if(gameState==='start'){
                     input.up=false;
                 }

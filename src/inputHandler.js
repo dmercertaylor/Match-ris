@@ -86,6 +86,7 @@ var input = {
             case "Space":
                 if(gameState==='start'){
                     game.menu.enter();
+                    e.preventDefault();
                     break;
                 }
             case "Escape":
@@ -95,6 +96,7 @@ var input = {
                 }else if(gameState==="pause"){
                     gameState = saveState;
                 }
+                e.preventDefault();
                 break;
             default:
                 break;

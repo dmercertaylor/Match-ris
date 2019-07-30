@@ -1,32 +1,43 @@
 fibonacci = [0,1,2,3,5,8,13];
 class Scorekeeper{
-    constructor(){
+    constructor(game){
         this.baseMultiplier = fibonacci[(colorSheet.length-1)]*2.5;
         this.multiplier = this.baseMultiplier;
         this.score = 0;
-        this.scoreInstance = 0;
         this.scoreEvents = [];
         this.popups = [];
         this.scoreText = "";
-        /*this.scoreBoard = {
-            x = 4,
-            y = game.gridSize-2,
-
-        }*/
+        this.scoreBoard = {
+            x: game.gridSize/3,
+            y: game.gridSize-2,
+            text: "",
+            update: function(deltaTime, score){
+                if(gameState==='play'||gameState==='scoring'){
+                    this.text = `Score: ${game.scoreKeeper.score}`;
+                }else{
+                    this.text = "";
+                }
+            },
+            draw: function(ctx){
+                ctx.font = "bold 20px roboto mono";
+                ctx.fillStyle = "black";
+                ctx.fillText(this.text, this.x,this.y);
+            }
+        }
     }
     update(deltaTime){
         this.popups = this.popups.filter((popup)=>{
+            popup.update(deltaTime);
             return (popup.opacity>0);
         });
-        this.popups.forEach(popup=>{
-            popup.update(deltaTime);
-        });
+        this.scoreBoard.update();
     }
     draw(ctx){
         this.popups.forEach(popup=>{popup.draw(ctx)});
         ctx.fillStyle = "white";
         ctx.font = "16px roboto mono";
         ctx.fillText(this.scoreText, 4, game.gridSize);
+        this.scoreBoard.draw(ctx);
     }
     getBaseMultiplier(){
         this.baseMultiplier = fibonacci[(colorSheet.length-1)]*2.5;
@@ -42,15 +53,13 @@ class Scorekeeper{
             let scoreLengthBonus = (score.length-3>=fibonacci.length)?fibonacci[fibonacci.length-1]:fibonacci[score.length-3];
             scoreLengthBonus = scoreLengthBonus*0.25;
             let thisScore = this.baseMultiplier*score.length*(multiScoreBonus+scoreLengthBonus+multiTurnBonus+1);
+            thisScore = Math.round(thisScore);
             this.popups.push(new ScorePop(score,thisScore));
-            this.scoreInstance+=thisScore;
+            this.score+=thisScore;
             //console.log(`base: ${this.baseMultiplier}\nlength: ${score.length}\nmultiscore: ${multiScoreBonus}]\nscoreLength: ${scoreLengthBonus}\nturns: ${multiTurnBonus}\nthis score: ${thisScore}`);
         });
     }
     endTurn(){
-        this.scoreInstance = Math.round(this.scoreInstance);
-        this.score+=this.scoreInstance;
-        this.scoreInstance = 0;
         this.scoreEvents = [];
     }
     scoreReset(){

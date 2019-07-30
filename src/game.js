@@ -7,7 +7,6 @@ class Game{
         this.board=[];
         this.markedForDeletion = [];
         this.lineHeight = this.height/this.gridSize;
-        this.scoreKeeper = new Scorekeeper();
         this.score = 0;
         this.fallTime = 900;
         this.levelTicker = 15;
@@ -22,6 +21,7 @@ class Game{
             }
         }
         this.menu = new Menu(this);
+        this.scoreKeeper = new Scorekeeper(this);
         this.block;
     }
     update(deltaTime){
@@ -29,7 +29,7 @@ class Game{
             this.menu.update(deltaTime);
             this.menu.draw(ctx);
         }
-        if(gameState === 'play'){
+        else if(gameState === 'play'){
             this.clearBlock();
             this.block.update(deltaTime);
             this.drawBlock();
@@ -52,7 +52,7 @@ class Game{
                 };
             }
         }
-        if(gameState === 'scoring'){
+        else if(gameState === 'scoring'){
             this.scoreAnimationTimer += deltaTime;
             function fall(){
                 game.doneFalling = true;
@@ -228,5 +228,13 @@ class Game{
             }
         }
         this.scoreKeeper.draw(ctx);
+        if(gameState==='pause'){
+            ctx.fillStyle = "rgba(25,0,10,0.2)";
+            ctx.fillRect(0,0,game.width,game.height);
+            ctx.fillStyle = "white";
+            ctx.strokeStyle = "black";
+            ctx.font = "bold 24px roboto mono";
+            ctx.fillText("Paused",this.width/2-ctx.measureText("Paused").width/2, this.height/2);
+        }
     }
 }

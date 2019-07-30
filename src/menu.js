@@ -129,6 +129,7 @@ class Menu{
             game.multiplier = colorSheet.length;
             delete game.menu;
             gameState = 'play';
+            game.scoreKeeper.update();
         }else{
             alert("Please select at least 2 colors");
         }

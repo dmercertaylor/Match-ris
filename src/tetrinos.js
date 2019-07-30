@@ -5,6 +5,8 @@ const GAME_WIDTH = canvas.width;
 const GAME_HEIGHT = canvas.height;
 var colorSheet = [];
 
+
+let saveState = "";
 let lastTime = 0;
 let gameState = 'start';
 let game = new Game(GAME_WIDTH,GAME_HEIGHT);

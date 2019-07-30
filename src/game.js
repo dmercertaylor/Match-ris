@@ -7,7 +7,7 @@ class Game{
         this.board=[];
         this.markedForDeletion = [];
         this.lineHeight = this.height/this.gridSize;
-        this.multiplier = colorSheet.length;
+        this.scoreKeeper = new Scorekeeper();
         this.score = 0;
         this.fallTime = 900;
         this.levelTicker = 15;
@@ -33,6 +33,7 @@ class Game{
             this.clearBlock();
             this.block.update(deltaTime);
             this.drawBlock();
+            this.scoreKeeper.update(deltaTime);
             if(!this.block.falling){
                 this.setLineHeight();
                 this.checkLoss();
@@ -76,9 +77,9 @@ class Game{
                 this.scoreAnimationTimer = 0;
                 if(this.checkScore()&&!this.doneScoring){
                     let lines = this.checkScore();
+                    game.scoreKeeper.addScore(lines);
                     for(let z=0;z<lines.length;z++){
                         let scoreLine = lines[z];
-                        this.multiplier += scoreLine.length - 2;
                         for(let i=0;i<scoreLine.length;i++){
                             if(scoreLine.direction === 'down'){
                                 game.board[scoreLine.y+i][scoreLine.x] = -2;
@@ -88,7 +89,6 @@ class Game{
                                 game.board[scoreLine.y][scoreLine.x+i] = -2;
                                 game.markedForDeletion.push({x: scoreLine.x+i, y: scoreLine.y});
                             }
-                            this.score += i * this.multiplier
                         }
                     }
                 }else{
@@ -107,14 +107,15 @@ class Game{
                             this.doneScoring = false;
                         }else{
                         gameState = 'play';
+                        game.scoreKeeper.endTurn();
                         this.doneFalling = true;
                         this.doneScoring = false;
-                        this.multiplier = colorSheet.length;
                         this.setLineHeight();
                         }
                     }
                 }
             }
+            this.scoreKeeper.update(deltaTime);
         }
     }
     clearBlock(){
@@ -166,6 +167,22 @@ class Game{
             }
         }
         if(output.length>0){
+            output = output.filter((line,index)=>{
+                if(index === 0){
+                    return true;
+                }else{
+                    let testLine = output[index-1];
+                    if((testLine.length===line.length+1&&
+                        testLine.direction===line.direction)&&(
+                        (testLine.x===line.x-1&&testLine.y===line.y)||
+                        (testLine.y===line.y-1&&testLine.x===line.x
+                        ))){
+                            return false;
+                        }else{
+                            return true;
+                        }
+                }
+            });
             return output;
         }else{
             return false;
@@ -173,13 +190,13 @@ class Game{
     }
     checkLoss(){
         if(this.lineHeight===0){
-            if(this.score>highScore){
-                highScore = this.score;
+            if(this.scoreKeeper.score>highScore){
+                highScore = this.scoreKeeper.score;
                 storage.setItem('highScore', String(highScore));
                 return true;
             }
             gameState = "loss";
-            alert("Your score: "+this.score+"\nHigh score: "+highScore);
+            alert("Your score: "+this.scoreKeeper.score+"\nHigh score: "+highScore);
         }
     }
     setLineHeight(){
@@ -210,5 +227,6 @@ class Game{
                 }
             }
         }
+        this.scoreKeeper.draw(ctx);
     }
 }

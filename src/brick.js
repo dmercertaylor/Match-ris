@@ -14,10 +14,10 @@ class Brick{
     }
     update(){
         this.coord = {x: this.relativeCoord.x + game.block.coord.x, y: this.relativeCoord.y + game.block.coord.y};
-        if(this.coord.x<=0||game.board[this.coord.y][this.coord.x-1]!==-1){
+        if(this.coord.x<=0||game.board[this.coord.y][this.coord.x-1][0]!==-1){
             game.block.isBlocked.left = true;
         }
-        if(this.coord.x+1>=game.board[this.coord.y].length||game.board[this.coord.y][this.coord.x+1]!==-1){
+        if(this.coord.x+1>=game.board[this.coord.y].length||game.board[this.coord.y][this.coord.x+1][0]!==-1){
             game.block.isBlocked.right = true;
         }
     }
@@ -27,7 +27,7 @@ class Brick{
         }
     }
     checkBelow(){
-        if(this.coord.y+1>=game.board.length||game.board[this.coord.y+1][this.coord.x]!==-1){
+        if(this.coord.y+1>=game.board.length||game.board[this.coord.y+1][this.coord.x][0]!==-1){
             return true;
         }else{
             return false;
@@ -37,7 +37,7 @@ class Brick{
         let testIndex = (this.positionIndex+1>=this.position.length)?0:this.positionIndex+1;
         game.clearBlock();
         let testCoords = {x: this.position[testIndex][0]+game.block.coord.x, y: this.position[testIndex][1]+game.block.coord.y}
-        if(testCoords.y<0||testCoords.y>=game.board.length||testCoords.x>=game.board[testCoords.y].length||game.board[testCoords.y][testCoords.x]!==-1){
+        if(testCoords.y<0||testCoords.y>=game.board.length||testCoords.x>=game.board[testCoords.y].length||game.board[testCoords.y][testCoords.x][0]!==-1){
             game.drawBlock();
             return false;
         }
@@ -48,7 +48,7 @@ class Brick{
         let testIndex = (this.positionIndex-1<0)?this.position.length-1:this.positionIndex-1;
         game.clearBlock();
         let testCoords = {x: this.position[testIndex][0]+game.block.coord.x, y: this.position[testIndex][1]+game.block.coord.y}
-        if(testCoords.y<0||testCoords.y>=game.board.length||testCoords.x>=game.board[testCoords.y].length||game.board[testCoords.y][testCoords.x]!==-1){
+        if(testCoords.y<0||testCoords.y>=game.board.length||testCoords.x<0||testCoords.x>=game.board[testCoords.y].length||game.board[testCoords.y][testCoords.x][0]!==-1){
             game.drawBlock();
             return false;
         }

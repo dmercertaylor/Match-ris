@@ -23,18 +23,12 @@ h1{
     margin: 0.5em;
     font-family: "Roboto Mono", monospace;
 }
-#gameWrapper{
-    border: 8px outset var(--color-1);
-    background-color: var(--color-3);
-    font-family: 'Roboto Mono', monospace;
-    width: 320px;
-    height: 480px;
-    margin: 0px;
-    padding: 0px;
-}
 canvas{
-    margin: 0px;
-    padding: 0px;
+  border: 8px outset var(--color-1);
+  background-color: var(--color-3);
+  font-family: 'Roboto Mono', monospace;
+  margin: 0px;
+  padding: 0px;
 }
 
 #tutorial{

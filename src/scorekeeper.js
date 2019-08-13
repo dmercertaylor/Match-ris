@@ -19,9 +19,9 @@ class Scorekeeper{
                 }
             },
             draw: function(ctx){
-                ctx.font = "bold 20px roboto mono";
+                ctx.font = `bold ${game.gridSize/2}px roboto mono`;
                 ctx.fillStyle = "black";
-                ctx.fillText(this.text, this.x,this.y);
+                ctx.fillText(this.text, game.gridSize/3,game.gridSize-2);
             }
         }
     }
@@ -76,6 +76,7 @@ class ScorePop{
         }else{
             this.y+=game.gridSize*scoreEvent.length/2;
         }
+        this.font = (game.gridSize/2.5+(game.gridSize/12*score/12))+"px roboto mono";
         this.text = "+"+score;
         this.opacity = 1;
     }
@@ -84,7 +85,7 @@ class ScorePop{
         this.y -= deltaTime/75;
     }
     draw(ctx){
-        ctx.font = "18px roboto mono";
+        ctx.font = this.font;
         ctx.fillStyle = "rgba(255,255,255,"+this.opacity+")";
         ctx.fillText(this.text,this.x,this.y);
     }

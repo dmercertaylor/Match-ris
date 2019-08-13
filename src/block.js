@@ -97,6 +97,9 @@ class Block{
         if(this.timer > this.timerReset){
             if(this.falling && !this.stopFall){
                 this.coord.y += 1;
+                gridColorIndex = (gridColorIndex+1>=gridColorSheet.length)?0:gridColorIndex+1;
+                gridOpacity = 0.15;
+                faceInvert = (faceInvert)?0:1;
                 if(this.checkFall()){
                     this.stopFall = true;
                 }

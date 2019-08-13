@@ -16,9 +16,9 @@ class Game{
         this.scoreAnimationTimeLength=150;
         this.doneFalling = true;
         this.doneScoring = false;
-        for(let i=0;i<this.height/this.gridSize;i++){
+        for(let i=0;i<this.height/this.gridSize&&i<=15;i++){
             this.board.push([]);
-            for(let z=0;z<this.width/this.gridSize;z++){
+            for(let z=0;z<this.width/this.gridSize&&z<=10;z++){
                 this.board[i].push([-1,0]);
             }
         }

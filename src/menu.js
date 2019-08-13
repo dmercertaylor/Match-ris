@@ -258,7 +258,7 @@ class ColorButton{
         this.x = x;
         this.y = y;
         this.color = color;
-        this.associatedImage = [new Image(512, 512),new Image(512,512)];
+        this.associatedImage = [new Image(496,496), new Image(512,512)];
         this.associatedImage[0].src = `./assets/${color}Face.png`;
         this.associatedImage[1].src = `./assets/${color}FaceInverted.png`;
         this.text = text;

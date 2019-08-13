@@ -16,7 +16,7 @@ class Game{
         this.scoreAnimationTimeLength=150;
         this.doneFalling = true;
         this.doneScoring = false;
-        for(let i=0;i<this.height/this.gridSize&&i<=15;i++){
+        for(let i=0;i<this.height/this.gridSize&&i<15;i++){
             this.board.push([]);
             for(let z=0;z<this.width/this.gridSize&&z<=10;z++){
                 this.board[i].push([-1,0]);
@@ -238,10 +238,11 @@ class Game{
                     ctx.strokeRect(col*this.gridSize,row*this.gridSize,this.gridSize,this.gridSize);
                   }
               }else{
-                ctx.strokeStyle = gridColorSheet[gridColorIndex]+gridOpacity+")";
+                /*
+                ctx.strokeStyle = "rgba(0,0,0,"+gridOpacity+")";
                 ctx.lineWidth = this.gridSize/25;
                 ctx.strokeRect(col*game.gridSize,row*game.gridSize,game.gridSize,game.gridSize);
-
+                */
               }
             }
           }

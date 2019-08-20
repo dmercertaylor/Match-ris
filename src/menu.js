@@ -41,12 +41,10 @@ class Menu{
         this.buttons = [
             [new ColorButton(game.width*0.15,game.height*0.21, "red",'red'),
             new ColorButton(game.width*0.55,game.height*0.21, "green",'green')],
-            [new ColorButton(game.width*0.15,game.height*0.21+game.gridSize, "blue",'blue')]
-            /*,
-            new ColorButton(game.width*0.55,game.height*0.21+40, "cyan",'cyan')],
-            [new ColorButton(game.width*0.15,game.height*0.21+80, "purple",'purple'),
-            new ColorButton(game.width*0.55,game.height*0.21+80, "black",'black')],
-            */
+            [new ColorButton(game.width*0.15,game.height*0.21+game.gridSize, "blue",'blue'),
+            new ColorButton(game.width*0.55,game.height*0.21+game.gridSize, "cyan",'cyan')],
+            [new ColorButton(game.width*0.15,game.height*0.21+game.gridSize*2, "purple",'purple'),
+            new ColorButton(game.width*0.55,game.height*0.21+game.gridSize*2, "black",'black')]
         ];
         this.startButton = {
             width: canvas.width-(game.gridSize*2),
@@ -258,9 +256,8 @@ class ColorButton{
         this.x = x;
         this.y = y;
         this.color = color;
-        this.associatedImage = [new Image(496,496), new Image(512,512)];
-        this.associatedImage[0].src = `./assets/${color}Face.png`;
-        this.associatedImage[1].src = `./assets/${color}FaceInverted.png`;
+        this.associatedImage = new Image();
+        this.associatedImage.src = `./assets/${color}Face.png`;
         this.text = text;
         this.font = canvas.width/20 + "px roboto mono";
         this.selected = false;

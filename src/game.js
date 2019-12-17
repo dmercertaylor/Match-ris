@@ -230,7 +230,10 @@ class Game{
                     ctx.fillStyle = "gold";
                     ctx.fillRect(col*this.gridSize,row*this.gridSize,this.gridSize,this.gridSize);
                   }else{
-                    ctx.drawImage(colorSheet[this.board[row][col]], col*this.gridSize,row*this.gridSize,this.gridSize,this.gridSize);
+                    // TO USE IMAGES
+                    // ctx.drawImage(colorSheet[this.board[row][col]], col*this.gridSize,row*this.gridSize,this.gridSize,this.gridSize);
+                    ctx.fillStyle = colorSheet[this.board[row][col]];
+                    ctx.fillRect(col*this.gridSize,row*this.gridSize,this.gridSize,this.gridSize);
                     ctx.strokeStyle = "black";
                     ctx.lineWidth=this.gridSize/17;
                     ctx.strokeRect(col*this.gridSize,row*this.gridSize,this.gridSize,this.gridSize);

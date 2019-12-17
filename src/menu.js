@@ -156,7 +156,7 @@ class Menu{
             this.buttons.forEach((group)=>{
                 group.forEach((button)=>{
                     if(button.selected){
-                        colorSheet.push(button.associatedImage);
+                        colorSheet.push(button.color);
                     }
                 });
             });

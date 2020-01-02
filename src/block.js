@@ -10,6 +10,7 @@ class Block{
         this.moveTimer = (this.timerReset>200)?200:this.timerReset;
         this.isBlocked = {left: false, right: false, up: false, down: false}
         this.positions = {
+            // tetrino positions in a 3x3 grid, in all rotations
             box: [[[0,0],[1,0],[1,1],[0,1]],[[1,0],[1,1],[0,1],[0,0]],[[1,1],[0,1],[0,0],[1,0]],[[0,1],[0,0],[1,0],[1,1]]],
             line: [[[-1,0],[0,0],[1,0],[2,0]],[[0,-1],[0,0],[0,1],[0,2]],[[2,0],[1,0],[0,0],[-1,0]],[[0,2],[0,1],[0,0],[0,-1]]],
             j: [[[0,0],[1,0],[2,0],[2,1]],[[1,0],[1,1],[1,2],[0,2]],[[2,1],[1,1],[0,1],[0,0]],[[0,2],[0,1],[0,0],[1,0]]],
@@ -97,9 +98,6 @@ class Block{
         if(this.timer > this.timerReset){
             if(this.falling && !this.stopFall){
                 this.coord.y += 1;
-                gridColorIndex = (gridColorIndex+1>=gridColorSheet.length)?0:gridColorIndex+1;
-                gridOpacity = 0.15;
-                faceInvert = (faceInvert)?0:1;
                 if(this.checkFall()){
                     this.stopFall = true;
                 }

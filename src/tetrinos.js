@@ -10,7 +10,7 @@ window.onload = function(){
 }
 
 /*** GAME GLOBALS ***/
-const colorSheet = [];    // filled in with user selected color values
+let colorSheet = [];    // filled in with user selected color values
 let lastTime = 0;         // Timestamp at previous frame, used to calculate deltaTime
 let gameState = 'start';  // current game state
 let saveState = "";       // Previous game state if user pauses the game

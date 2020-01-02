@@ -41,11 +41,6 @@ class Game{
             this.clearBlock();
             this.block.update(deltaTime);
             this.drawBlock();
-            if(gridOpacity>0){
-              gridOpacity -= (0.1/game.fallTime)*deltaTime;
-            }else{
-              gridOpacity = 0;
-            }
             this.scoreKeeper.update(deltaTime);
             if(!this.block.falling){
                 this.setLineHeight();
@@ -208,6 +203,7 @@ class Game{
             return false;
         }
     }
+
     checkLoss(){
         if(this.lineHeight===0){
             if(this.scoreKeeper.score>highScore){
@@ -243,8 +239,6 @@ class Game{
                     ctx.fillStyle = "gold";
                     ctx.fillRect(col*this.gridSize,row*this.gridSize,this.gridSize,this.gridSize);
                   }else{
-                    // TO USE IMAGES
-                    // ctx.drawImage(colorSheet[this.board[row][col]], col*this.gridSize,row*this.gridSize,this.gridSize,this.gridSize);
                     ctx.fillStyle = colorSheet[this.board[row][col]];
                     ctx.fillRect(col*this.gridSize,row*this.gridSize,this.gridSize,this.gridSize);
                     ctx.strokeStyle = "black";

@@ -44,7 +44,6 @@ class Scorekeeper{
         return this.baseMultiplier;
     }
     addScore(scoreEvent){
-        console.log(scoreEvent);
         this.scoreEvents.push(scoreEvent);
         let multiTurnBonus = (this.scoreEvents.length>=fibonacci.length)?fibonacci[fibonacci.length-1]:fibonacci[this.scoreEvents.length-1];
         multiTurnBonus = multiTurnBonus/2.5
@@ -57,7 +56,6 @@ class Scorekeeper{
             thisScore = Math.round(thisScore);
             this.popups.push(new ScorePop(score,thisScore));
             this.score+=thisScore;
-            //console.log(`base: ${this.baseMultiplier}\nlength: ${score.length}\nmultiscore: ${multiScoreBonus}]\nscoreLength: ${scoreLengthBonus}\nturns: ${multiTurnBonus}\nthis score: ${thisScore}`);
         });
     }
     endTurn(){

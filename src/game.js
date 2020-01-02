@@ -1,3 +1,4 @@
+/* TODO: BREAK THIS UP */
 class Game{
     constructor(gameWidth, gameHeight){
         gameState = 'start';
@@ -5,32 +6,37 @@ class Game{
         this.width = gameWidth;
         this.height = gameHeight;
         this.gridSize = gameWidth/10;
-        this.board=[];
-        this.markedForDeletion = [];
-        this.lineHeight = this.height/this.gridSize;
+        this.board=[]; // board where blocks are stored
+        this.markedForDeletion = []; // blocks to be deleted at next call
+        this.lineHeight = this.height/this.gridSize; // current highest block's line, used to check for loss
         this.score = 0;
-        this.fallTime = 900;
-        this.levelLength = 13
-        this.levelTicker = this.levelLength;
-        this.scoreAnimationTimer=0;
-        this.scoreAnimationTimeLength=150;
-        this.doneFalling = true;
-        this.doneScoring = false;
+        this.fallTime = 900; // Time it takes for blocks to tick down
+        this.levelLength = 13; // Number of blocks between tick speed increases
+        this.levelTicker = this.levelLength; // Iterator, actually counts down levelLength
+        this.scoreAnimationTimer=0; // Iterator, shows how long score animations have been onscreen
+        this.scoreAnimationTimeLength=150; // How long score animations should be onscreen
+        this.doneFalling = true; // Extensions of gamestate: shows if blocks are done falling and can begin scoring
+        this.doneScoring = false; // false until scoring phase is complete
+        // Add 15 sub-arrays to grid, so it's an actual grid.
         for(let i=0;i<this.height/this.gridSize&&i<15;i++){
             this.board.push([]);
             for(let z=0;z<this.width/this.gridSize&&z<=10;z++){
                 this.board[i].push(-1);
             }
         }
-        this.menu = new Menu(this);
+        this.menu = new Menu(this); // Main menu
         this.scoreKeeper = new Scorekeeper(this);
-        this.block;
+        this.block; // Will be filled when the game actually starts
     }
+
+    /* TODO: BREAK THIS UP */
     update(deltaTime){
+        /*** GAMESTATE START ***/
         if(gameState === 'start'){
             this.menu.update(deltaTime);
             this.menu.draw(ctx);
         }
+        /*** GAMESTATE PLAY ***/
         else if(gameState === 'play'){
             this.clearBlock();
             this.block.update(deltaTime);
@@ -59,6 +65,7 @@ class Game{
                 };
             }
         }
+        /*** GAMESTATE SCORING ***/
         else if(gameState === 'scoring'){
             this.scoreAnimationTimer += deltaTime;
             function fall(){
@@ -125,16 +132,22 @@ class Game{
             this.scoreKeeper.update(deltaTime);
         }
     }
+
+    /** Remove a block from the game grid **/
     clearBlock(){
         this.block.bricks.forEach(function(brick){
             game.board[brick.coord.y][brick.coord.x] = -1;
         });
     }
+
+    /** Misnomer, adds a block to the grid **/
     drawBlock(){
         this.block.bricks.forEach(function(brick){
             game.board[brick.coord.y][brick.coord.x] = brick.color;
         });
     }
+
+    /** Check if a score is possible (called when blocks land) **/
     checkScore(){
         let output = [];
         function findMatch(x,y){

@@ -1,27 +1,27 @@
+/*** CANVAS GLOBALS ***/
 const canvas = document.getElementById("gameScreen");
 const ctx = canvas.getContext("2d");
+setCanvasSize();  // Ensures canvas loads to the right size
 
-var colorSheet = [];
-let gridOpacity = 0.2;
-
-//Add opacity values when using
-let gridColorSheet=["rgba(0,255,255,","rgba(100,255,125,","rgba(200,255,50,","rgba(255,255,0,","rgba(255,100,100,","rgba(255,50,200,","rgba(150,0,255,","rgba(50,150,255,"];
-let gridColorIndex=0;
-let faceInvert = 0;
-let saveState = "";
-let lastTime = 0;
-let gameState = 'start';
-setCanvasSize();
-let game = new Game(canvas.width,canvas.height);
-let storage = window.localStorage;
-let highScore = storage.getItem('highScore');
-highScore = (highScore)?Number(highScore):0;
-
-ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.clearRect(0,0,canvas.width,canvas.height); // blank canvas
 window.onload = function(){
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", onResize); // keep aspect ratio correct on resize
     requestAnimationFrame(gameLoop);
 }
+
+/*** GAME GLOBALS ***/
+const colorSheet = [];    // filled in with user selected color values
+let lastTime = 0;         // Timestamp at previous frame, used to calculate deltaTime
+let gameState = 'start';  // current game state
+let saveState = "";       // Previous game state if user pauses the game
+
+let game = new Game(canvas.width,canvas.height);
+
+let storage = window.localStorage;
+let highScore = storage.getItem('highScore'); // Store highscore in local storage
+highScore = (highScore)?Number(highScore):0;
+
+/*** GAME LOOP ***/
 function gameLoop(timestamp){
     let deltaTime = timestamp - lastTime;
     lastTime = timestamp;
@@ -32,6 +32,8 @@ function gameLoop(timestamp){
     requestAnimationFrame(gameLoop);
 }
 
+/*** CANVAS SIZE FUNCTIONS ***/
+// Set's canvas size based on window height, correct aspect ratio
 function setCanvasSize(){
   canvas.height = window.innerHeight*0.85;
   canvas.width = canvas.height*(2/3);
@@ -47,6 +49,8 @@ function setCanvasSize(){
   canvas.height = canvas.width*1.5;
 }
 
+// called on window resize, keeps game variables in line with
+// canvas size
 function onResize(){
   setCanvasSize();
   game.width = canvas.width;
@@ -54,6 +58,7 @@ function onResize(){
   game.gridSize = game.width/10;
 }
 
+// Helper function called elsewhere, wraps text on canvas.
 function textWrap(ctx, text, maxWidth){
     let words = text.split(" ");
     let lines = [];

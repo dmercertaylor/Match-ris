@@ -10,4 +10,6 @@ Each time you score earns points, and increases your point multiplier.
 However, the point multiplier resets every time a new block drops, so try to score as many times as you can off a single block.
 After every score, all unsupported blocks will fall until they land on something. Use this to your advantage to build up score chains, and boost your multiplier.
 
-This is a personal project, and isn't particularly well commented or documented. Apologies
+## Tools Used
+
+This game was written as an exploration of several different features in JavaScript, primarily the Canvas 2D rendering context and `Classes`. It is written entirely in HTML, CSS, and vanilla JavaScript.
